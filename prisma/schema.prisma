@@ -12,7 +12,7 @@ model User {
   name     String  @db.VarChar(35)
   email    String  @db.VarChar(30)
   username String  @db.VarChar(10)
-  senha    String  @db.VarChar(20)
+  password String  @db.VarChar(20)
   Tweets   Tweet[]
 
   Retweet  Retweet[]
@@ -55,6 +55,8 @@ model Likes {
   TweetId Tweet  @relation(fields: [tweetId], references: [id])
   userId  String
   tweetId String
+
+
 
   @@map("likes_to_users")
 }
