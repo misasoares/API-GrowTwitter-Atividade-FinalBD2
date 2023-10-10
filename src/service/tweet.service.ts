@@ -1,5 +1,6 @@
 import repository from "../database/prisma.database";
 import { Tweet } from "../model/tweet.model";
+import userService from "./user.service";
 
 class TweetService{
 
@@ -14,15 +15,24 @@ class TweetService{
     }
 
     public async create(data:any){
-        const tweet = new Tweet(data.content, data.type, data.userId)
-        const createdTweet = await repository.tweet.create({
-            data:{
-                content: tweet.content,
-                type: tweet.type,
-                userId: tweet.userId
-            }
-        })
-        return createdTweet
+        const tweet = new Tweet(data.content, data.type, data.token)
+        const user = await userService.getUserByToken(data.token)
+
+        if(user){
+            const createdTweet = await repository.tweet.create({
+                data:{
+                    content: tweet.content,
+                    type: tweet.type,
+                    userId: user.id
+                }
+            })
+            return createdTweet
+        }
+
+        return {
+            message:"Você não está online."
+        }
+        
     }
 }
 

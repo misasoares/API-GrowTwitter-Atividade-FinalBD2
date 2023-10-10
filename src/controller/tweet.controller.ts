@@ -6,15 +6,19 @@ export default class TweetController {
     const { userId } = req.params;
     const result = await tweetService.listByIdUser(userId);
 
-    return res.status(200).send(result)
+    return res.status(200).send(result);
   }
 
   public async create(req: Request, res: Response) {
-    const { userId } = req.params;
-    const { content, type } = req.body;
+    try {
+      const { token } = req.headers;
+      const { content, type } = req.body;
 
-    const result = await tweetService.create({ content, type, userId });
+      const result = await tweetService.create({ content, type, token });
 
-    return res.status(200).send(result);
+      return res.status(200).send(result);
+    } catch (error) {
+      return res.status(400).send(error);
+    }
   }
 }

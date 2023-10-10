@@ -10,9 +10,10 @@ datasource db {
 model User {
   id       String  @id @default(uuid())
   name     String  @db.VarChar(35)
-  email    String  @db.VarChar(30)
-  username String  @db.VarChar(10)
+  email    String  @unique @db.VarChar(30)
+  username String  @unique @db.VarChar(10)
   password String  @db.VarChar(20)
+  token    String? @unique
   Tweets   Tweet[]
 
   Retweet  Retweet[]
@@ -55,8 +56,6 @@ model Likes {
   TweetId Tweet  @relation(fields: [tweetId], references: [id])
   userId  String
   tweetId String
-
-
 
   @@map("likes_to_users")
 }
