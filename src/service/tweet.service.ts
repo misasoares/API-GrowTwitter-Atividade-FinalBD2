@@ -34,6 +34,16 @@ class TweetService{
         }
         
     }
+
+    public async showTweet(id:string){
+        const result = await repository.tweet.findUnique({
+            where:{
+                id
+            }
+        })
+
+        return result
+    }
 }
 
 export default new TweetService()

@@ -82,6 +82,15 @@ class UserService{
         };
 
       }
+
+      public async getById(id:string){
+        const result = await repository.user.findUnique({
+          where:{
+            id
+          }
+        })
+        return result
+      }
 }
 
 export default new UserService

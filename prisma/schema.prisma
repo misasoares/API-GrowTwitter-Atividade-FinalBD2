@@ -64,6 +64,6 @@ model Follower {
   id         String @id @default(uuid())
   User       User   @relation("follower", fields: [userId], references: [id])
   Follower   User   @relation("followed", fields: [followerId], references: [id])
-  userId     String
-  followerId String @unique
+  userId     String         //eu vou seguir
+  followerId String @unique //o fulano de tal
 }

@@ -11,7 +11,7 @@ class RetweetService {
 
     if (!user) {
       return {
-        message: "Usuario não contrado",
+        message: "Usuario não está logado",
       };
     }
 
