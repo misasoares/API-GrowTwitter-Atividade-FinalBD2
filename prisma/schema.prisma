@@ -17,8 +17,8 @@ model User {
   Tweets   Tweet[]
 
   Retweet  Retweet[]
-  Follower Follower[] @relation("follower") //array de quem eu sigo
-  Followed Follower[] @relation("followed") //array de quem me segue
+  Follower Follower[] @relation("follower") //array de quem me segue
+  Followed Follower[] @relation("followed") //array de quem eu sigo
 
   LikesToUser Likes[]
 
@@ -63,7 +63,7 @@ model Likes {
 model Follower {
   id         String @id @default(uuid())
   User       User   @relation("follower", fields: [userId], references: [id])
-  Follower   User   @relation("followed", fields: [followerId], references: [id])
-  userId     String         //eu vou seguir
-  followerId String @unique //o fulano de tal
+  Followed   User   @relation("followed", fields: [followedId], references: [id])
+  userId     String //eu vou seguir
+  followedId String @unique //o fulano de tal
 }

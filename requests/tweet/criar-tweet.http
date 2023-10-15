@@ -1,0 +1,8 @@
+POST http://localhost:3333/tweets/create HTTP/1.1
+content-type: application/json
+Authorization: 19a7aae5-b12c-4be2-90f9-ec987e37efd5
+
+{
+    "content": "Terceiro tweet de mim, John",
+    "type": "tweet"
+}

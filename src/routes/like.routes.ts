@@ -1,11 +1,12 @@
 import { Router } from "express";
 import { AuthController } from "../controller/auth.controller";
 import LikeController from "../controller/like.controller";
+import authMiddleware from "../middleware/auth.middleware";
 
 export const likeRoutes = () => {
   const router = Router();
 
-  router.post("/create", new LikeController().create);
+  router.post("/create", authMiddleware, new LikeController().create);
 
 
   return router;

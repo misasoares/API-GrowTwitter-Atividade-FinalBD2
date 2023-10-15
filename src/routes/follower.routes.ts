@@ -1,13 +1,12 @@
 import { Router } from "express";
-import { AuthController } from "../controller/auth.controller";
-import LikeController from "../controller/like.controller";
-import FollowerController from "../controller/follower.controller";
+import FollowController from "../controller/follow.controller";
+import authMiddleware from "../middleware/auth.middleware";
 
-export const followerRoutes = () => {
+export const followRoutes = () => {
   const router = Router();
 
-  router.post("/create", new FollowerController().create);
-
-
+  router.post("/create", authMiddleware, new FollowController().create);
+  router.get("/listAllWhoIFollow", authMiddleware, new FollowController().listAllWhoIFollow);
+  router.get("/listWhoFollowMe", authMiddleware, new FollowController().listWhoFollowMe);
   return router;
 };

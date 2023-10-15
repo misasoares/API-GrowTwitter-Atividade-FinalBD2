@@ -14,7 +14,7 @@ export class AuthController {
 
       const token = uuid();
 
-      const update = await userService.update({ ...user, tokenAsString: token });
+      const update = await userService.update({ ...user, token: token });
 
       return res.status(200).send(update);
     } catch (error) {
@@ -24,11 +24,11 @@ export class AuthController {
 
   public async logout(req: Request, res: Response) {
     try {
-      const { token } = req.headers;
+      const { userID } = req.body;
 
-      const user = await userService.getUserByToken(token as string);
+      const user = await userService.getById(userID);
 
-      const logout = await userService.update({ ...user, tokenAsString: null });
+      const logout = await userService.update({ ...user, token: null });
 
       return res.status(200).send({ mesasge: "Usuário desconectado." });
     } catch (error) {

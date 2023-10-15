@@ -1,4 +1,4 @@
-export interface CreateFollowerDto {
-  tokenAsString: string;
-  followerId: string;
+export interface FollowerDto {
+  userID: string;
+  followedId: string;
 }

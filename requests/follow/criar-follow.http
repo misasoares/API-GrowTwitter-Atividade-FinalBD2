@@ -1,0 +1,7 @@
+POST http://localhost:3333/follows/create HTTP/1.1
+content-type: application/json
+Authorization: 847d2571-e5aa-4a62-832a-8bc9975e612e
+
+{
+    "followedId": "0b77fa6e-4d64-457e-8cb7-66dae6aeb1ef"
+}

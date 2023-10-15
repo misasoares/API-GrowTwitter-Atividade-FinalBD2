@@ -1,4 +1,4 @@
 export interface CreateLikeDto{
-    tokenAsString:string
+    userID:string
     tweetId:string
 }
