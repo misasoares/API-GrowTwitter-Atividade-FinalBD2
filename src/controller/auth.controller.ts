@@ -7,15 +7,15 @@ export class AuthController {
       const { username, password } = req.body;
 
       const user = await userService.getByUsernameAndPassword(username, password);
-
+     
       if (!user) {
         return res.status(401).send({ message: "Username ou senha incorretos." });
       }
 
       const token = uuid();
-
-      const update = await userService.update({ ...user, token: token });
-
+   
+      const update = await userService.update({ ...user.data, token: token });
+     
       return res.status(200).send(update);
     } catch (error) {
       return res.status(400).send(error);

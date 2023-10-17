@@ -29,7 +29,7 @@ model Tweet {
   id      String @id @default(uuid())
   content String @db.VarChar(500)
   type    String @db.VarChar(5) //tweet ou retweet
-  User    User   @relation(fields: [userId], references: [id])
+  User    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId  String
 
   Retweet Retweet[]
@@ -42,9 +42,9 @@ model Tweet {
 model Retweet {
   id      String @id @default(uuid())
   content String @db.VarChar(500)
-  Tweet   Tweet  @relation(fields: [tweetId], references: [id])
+  Tweet   Tweet  @relation(fields: [tweetId], references: [id],onDelete: Cascade)
   tweetId String
-  User    User   @relation(fields: [userId], references: [id])
+  User    User   @relation(fields: [userId], references: [id],onDelete: Cascade)
   userId  String
 
   @@map("retweet")
@@ -52,8 +52,8 @@ model Retweet {
 
 model Likes {
   id      String @id @default(uuid())
-  UserId  User   @relation(fields: [userId], references: [id])
-  TweetId Tweet  @relation(fields: [tweetId], references: [id])
+  UserId  User   @relation(fields: [userId], references: [id],onDelete: Cascade)
+  TweetId Tweet  @relation(fields: [tweetId], references: [id],onDelete: Cascade)
   userId  String
   tweetId String
 
@@ -62,8 +62,8 @@ model Likes {
 
 model Follower {
   id         String @id @default(uuid())
-  User       User   @relation("follower", fields: [userId], references: [id])
-  Followed   User   @relation("followed", fields: [followedId], references: [id])
+  User       User   @relation("follower", fields: [userId], references: [id],onDelete: Cascade)
+  Followed   User   @relation("followed", fields: [followedId], references: [id],onDelete: Cascade)
   userId     String //eu vou seguir
   followedId String @unique //o fulano de tal
 }

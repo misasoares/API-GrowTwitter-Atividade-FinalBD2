@@ -1,5 +1,5 @@
 DELETE http://localhost:3333/users/delete HTTP/1.1
 content-type: application/json
-Authorization:fd4db4ba-94b8-4dd6-b192-0a09e9015dc3
+Authorization:9ed99717-440e-4434-a360-8b2c2891e2dd
 
 

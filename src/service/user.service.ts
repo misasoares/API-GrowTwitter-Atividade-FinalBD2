@@ -73,22 +73,30 @@ class UserService {
   }
 
   public async update(data: UserUpdateDto): Promise<ResponseDto> {
+   
     const user = await repository.user.findUnique({
       where: {
-        id: data.userID,
+        username: data.username,
       },
     });
-
+  
     if(data.username!.length > 10){
       return {
         code:400,
-        message:`Username excedeu o limite de characteres.a`
+        message:`Username excedeu o limite de characteres.`
+      }
+    }
+  
+    if(!user){
+      return {
+        code:404,
+        message:`Usuário não encontrado.`,
       }
     }
 
     const updatedUser = await repository.user.update({
       where: {
-        id: user!.id,
+        id: user.id,
       },
       data: {
         name: data.name,
