@@ -1,14 +1,30 @@
+import FollowController from "../controller/follow.controller";
+import LikeController from "../controller/like.controller";
+import RetweetController from "../controller/retweet.controller";
+import TweetController from "../controller/tweet.controller";
 import repository from "../database/prisma.database";
-import { UserUpdateDto } from "../dtos/user.dto";
+import { ResponseDto } from "../dtos/response.dto";
+import { CreateUserDto, UserUpdateDto } from "../dtos/user.dto";
 import { User } from "../model/user.model";
 
 class UserService {
-  public async list() {
+  public async list(): Promise<ResponseDto> {
     const data = await repository.user.findMany();
-    return data;
+    return {
+      code: 200,
+      message: `Lista de todos os usuários:`,
+      data: data,
+    };
   }
 
-  public async create(data: any) {
+  public async create(data: CreateUserDto): Promise<ResponseDto> {
+    if(data.username!.length > 10){
+      return {
+        code:400,
+        message:`Username excedeu o limite de characteres.`
+      }
+    }
+    
     const user = new User(data.name, data.email, data.username, data.password);
 
     const createdUser = await repository.user.create({
@@ -20,10 +36,14 @@ class UserService {
       },
     });
 
-    return createdUser;
+    return {
+      code: 201,
+      message: `Usuário criado com sucesso.`,
+      data: createdUser,
+    };
   }
 
-  public async getByUsernameAndPassword(username: string, password: string) {
+  public async getByUsernameAndPassword(username: string, password: string): Promise<ResponseDto> {
     const user = await repository.user.findUnique({
       where: {
         username: username,
@@ -31,43 +51,50 @@ class UserService {
       },
     });
 
-    return user;
+    return {
+      code: 200,
+      message: `Sucesso.`,
+      data: user,
+    };
   }
 
-  public async getUserByToken(token: string) {
+  public async getUserByToken(token: string): Promise<ResponseDto> {
     const user = await repository.user.findUnique({
       where: {
         token: token,
       },
     });
 
-    return user;
+    return {
+      code: 200,
+      message: `Sucesso.`,
+      data: user,
+    };
   }
 
-  public async update(data: UserUpdateDto) {
-
+  public async update(data: UserUpdateDto): Promise<ResponseDto> {
     const user = await repository.user.findUnique({
       where: {
-        username: data.username,
+        id: data.userID,
       },
     });
-    
-    if (!user) {
+
+    if(data.username!.length > 10){
       return {
-        code: 404,
-        message: "Usuário não encontrado.",
-      };
+        code:400,
+        message:`Username excedeu o limite de characteres.a`
+      }
     }
 
     const updatedUser = await repository.user.update({
       where: {
-        username: data.username,
+        id: user!.id,
       },
       data: {
         name: data.name,
         email: data.email,
-        username: data.username,
         password: data.password,
+        username: data.username,
         token: data.token,
       },
     });
@@ -79,24 +106,45 @@ class UserService {
     };
   }
 
-  public async getById(id: string) {
+  public async getById(id: string): Promise<ResponseDto> {
     const result = await repository.user.findUnique({
       where: {
         id,
       },
     });
 
-    return result;
+    return {
+      code: 200,
+      message: `Sucesso.`,
+      data: result,
+    };
   }
 
-  public async delete(id: string) {
+  public async delete(id: string): Promise<ResponseDto> {
+
+    const user = await repository.user.findUnique({
+      where:{
+        id
+      }
+    })
+if(user){
+  //fazer uma função que delete todos os likes, todos os tweets, todos
+  //os follows, etc etc, sem passar nenhum parametro
+
+}
     const result = await repository.user.delete({
       where: {
-        id,
+        id:user!.id
       },
     });
 
-    return result;
+    
+
+    return {
+      code: 200,
+      message: `Usuário deletado com sucesso.`,
+      data: result,
+    };
   }
 }
 

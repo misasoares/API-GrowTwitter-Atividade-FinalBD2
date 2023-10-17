@@ -1,8 +1,8 @@
-POST http://localhost:3333/retweets/create HTTP/1.1
+POST http://localhost:3333/retweets/ HTTP/1.1
 content-type: application/json
-Authorization: 847d2571-e5aa-4a62-832a-8bc9975e612e
+Authorization: 19a7aae5-b12c-4be2-90f9-ec987e37efd5
 
 {
-    "content": "Eu, John, estou retweetando o meu proprio tweet.",
+    "content": "BLAÁ BLAÁ BLA BLAAAA.",
     "tweetId": "65a446df-d525-41f4-ba31-e4b5d6875919"
 }

@@ -24,9 +24,9 @@ export default class UserController {
 
   public async update(req: Request, res: Response) {
     try {
-      const { userID, name, email, username, password, token } = req.body;
+      const { userID, name, email, password,username , token } = req.body;
 
-      const result = await userService.update({ userID, name, email, username, password, token });
+      const result = await userService.update({ userID, name, email, password, username , token });
 
       return res.status(200).send(result);
     } catch (error) {

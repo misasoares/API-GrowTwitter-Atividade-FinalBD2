@@ -1,0 +1,2 @@
+GET http://localhost:3333/likes/listAllLikesByUser HTTP/1.1
+Authorization:fd4db4ba-94b8-4dd6-b192-0a09e9015dc3

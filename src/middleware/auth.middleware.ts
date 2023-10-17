@@ -12,18 +12,19 @@ async function authMiddleware(req: Request, res: Response, next: NextFunction) {
 				message: 'Authentication token fail',
 			});
 		}
-
-		const user = await userService.getUserByToken(token as string);
-
-		if (!user) {
+		
+		const result = await userService.getUserByToken(token as string);
+		
+		if (!result) {
 			return res.status(401).send({
 				code: 401,
 				message: 'Authentication token fail',
 			});
 		}
-
-		req.body.userID = user.id;
-
+		
+		
+		req.body.userID = result.data.id;
+		
 		next();
 	} catch (error) {
 		return res.status(500).send({

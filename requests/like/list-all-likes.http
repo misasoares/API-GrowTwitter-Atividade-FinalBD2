@@ -1,0 +1,2 @@
+GET http://localhost:3333/likes/list HTTP/1.1
+Authorization:0be3d182-b782-4978-a4d8-4090b3e4559c

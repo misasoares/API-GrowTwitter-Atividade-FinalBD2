@@ -1,0 +1,2 @@
+GET http://localhost:3333/tweets/unique-tweet/c3394e9f-ef04-418e-8964-dca8b4546f6c HTTP/1.1
+Authorization:19a7aae5-b12c-4be2-90f9-ec987e37efd5

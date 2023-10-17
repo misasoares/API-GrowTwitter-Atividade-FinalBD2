@@ -30,7 +30,7 @@ export class AuthController {
 
       const logout = await userService.update({ ...user, token: null });
 
-      return res.status(200).send({ mesasge: "Usuário desconectado." });
+      return res.status(200).send(logout);
     } catch (error) {
       return res.status(400).send(error);
     }

@@ -1,0 +1,4 @@
+DELETE http://localhost:3333/follows/delete/133dfe99-1313-47aa-9fb3-31a2b7593319 HTTP/1.1
+Authorization:0be3d182-b782-4978-a4d8-4090b3e4559c
+
+

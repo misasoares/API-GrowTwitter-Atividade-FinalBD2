@@ -1,10 +1,11 @@
 import repository from "../database/prisma.database";
+import { ResponseDto } from "../dtos/response.dto";
 import { DeleteRetweetDto, RetweetCreateDto, UpdateRetweetDto } from "../dtos/retweet.dto";
 import { Retweet } from "../model/retweet.model";
 import userService from "./user.service";
 
 class RetweetService {
-  public async create(data: RetweetCreateDto) {
+  public async create(data: RetweetCreateDto): Promise<ResponseDto> {
     const retweet = new Retweet(data.content, data.tweetId, data.userID);
 
     const createdRetweet = await repository.retweet.create({
@@ -22,16 +23,24 @@ class RetweetService {
       },
     });
 
-    return createdRetweet;
+    return {
+      code: 201,
+      message: `Você retweetou '${createdRetweet.content}' no tweet '${createdRetweet.Tweet.content}'.`,
+      data: createdRetweet,
+    };
   }
 
-  public async list() {
+  public async list(): Promise<ResponseDto> {
     const result = await repository.retweet.findMany();
 
-    return result;
+    return {
+      code: 200,
+      message: `Lista de todos os retweets:`,
+      data: result,
+    };
   }
 
-  public async update(data: UpdateRetweetDto) {
+  public async update(data: UpdateRetweetDto): Promise<ResponseDto> {
     const result = await repository.retweet.update({
       where: {
         id: data.id,
@@ -41,28 +50,64 @@ class RetweetService {
         content: data.content,
       },
     });
-    return result;
+    return {
+      code: 200,
+      message: `Você alterou o seu retweet. novo tweet: '${result.content}'`,
+      data: result,
+    };
   }
 
-  public async delete(data: DeleteRetweetDto) {
+  public async delete(data: DeleteRetweetDto): Promise<ResponseDto> {
     const result = await repository.retweet.delete({
       where: {
         id: data.id,
         userId: data.userID,
       },
+      include: {
+        Tweet: {
+          select: {
+            content: true,
+          },
+        },
+      },
     });
 
-    return result;
+    return {
+      code: 200,
+      message: `Você apagou seu retweet '${result.content} do tweet '${result.Tweet.content}'`,
+      data: result,
+    };
   }
 
-  public async listByUserId(userID: string) {
+  public async listByUserId(userID: string): Promise<ResponseDto> {
     const result = await repository.retweet.findMany({
       where: {
         userId: userID,
       },
+      include: {
+        User: {
+          select: {
+            username: true,
+          },
+        },
+        Tweet: {
+          select: {
+            content: true,
+            User: {
+              select: {
+                username: true,
+              },
+            },
+          },
+        },
+      },
     });
 
-    return result;
+    return {
+      code: 200,
+      message: `Lista de todos os retweets do ${result[0].User.username}`,
+      data: result,
+    };
   }
 }
 export default new RetweetService();

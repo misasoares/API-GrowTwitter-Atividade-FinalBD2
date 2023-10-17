@@ -40,8 +40,9 @@ export default class FollowController {
 
   public async deleteWhoIFollow(req: Request, res: Response) {
     try {
-      const { userID, followedId } = req.body;
-
+      const { userID } = req.body;
+      const { followedId }= req.params
+      
       const result = await followService.delete({ userID, followedId });
 
       return res.status(200).send(result);

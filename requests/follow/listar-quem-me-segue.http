@@ -1,0 +1,2 @@
+GET http://localhost:3333/follows/listWhoFollowMe HTTP/1.1
+Authorization:e15716ec-e219-4e8f-a283-f185a7f4d4f6

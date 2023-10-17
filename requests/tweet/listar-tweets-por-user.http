@@ -1,0 +1,2 @@
+GET http://localhost:3333/tweets/list-by-user HTTP/1.1
+Authorization:19a7aae5-b12c-4be2-90f9-ec987e37efd5
