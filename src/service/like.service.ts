@@ -28,8 +28,8 @@ class LikeService {
 
     const createLike = await repository.likes.create({
       data: {
-        userId: user.id,
-        tweetId: tweet.id,
+        userId: user.data.id,
+        tweetId: tweet.data.id,
       },
       include: {
         TweetId: true,

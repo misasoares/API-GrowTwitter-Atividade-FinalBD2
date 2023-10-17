@@ -1,7 +1,7 @@
 POST http://localhost:3333/likes/ HTTP/1.1
 content-type: application/json
-Authorization: fd4db4ba-94b8-4dd6-b192-0a09e9015dc3
+Authorization: b7729151-2d08-473a-9ff8-a33b36b30bd6
 
 {
-    "tweetId": "65a446df-d525-41f4-ba31-e4b5d6875919"
+    "tweetId": "e739e89f-1f45-4d9d-8fb6-69b52ae9aa25"
 }

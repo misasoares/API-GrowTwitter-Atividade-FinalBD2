@@ -1,8 +1,8 @@
 POST http://localhost:3333/tweets/create HTTP/1.1
 content-type: application/json
-Authorization: e15716ec-e219-4e8f-a283-f185a7f4d4f6
+Authorization: cc57be7c-d9a5-4070-a878-9cbb2fb9b14f
 
 {
-    "content": "XABLAUUUUU",
+    "content": "Estou com fome.",
     "type": "tweet"
 }

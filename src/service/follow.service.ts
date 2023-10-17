@@ -28,7 +28,7 @@ class FollowService {
 
     return {
       code: 201,
-      message: `O usuário ${findUser.data.id} seguiu ${findFollowed.data.id}.`,
+      message: `O usuário ${findUser.data.username} seguiu ${findFollowed.data.username}.`,
       data: createFollower,
     };
   }

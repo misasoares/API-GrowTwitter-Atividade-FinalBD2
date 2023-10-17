@@ -22,6 +22,9 @@ model User {
 
   LikesToUser Likes[]
 
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
   @@map("user")
 }
 
@@ -36,34 +39,48 @@ model Tweet {
 
   Likes Likes[]
 
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
   @@map("tweet")
 }
 
 model Retweet {
   id      String @id @default(uuid())
   content String @db.VarChar(500)
-  Tweet   Tweet  @relation(fields: [tweetId], references: [id],onDelete: Cascade)
+  Tweet   Tweet  @relation(fields: [tweetId], references: [id], onDelete: Cascade)
   tweetId String
-  User    User   @relation(fields: [userId], references: [id],onDelete: Cascade)
+  User    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId  String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
 
   @@map("retweet")
 }
 
 model Likes {
   id      String @id @default(uuid())
-  UserId  User   @relation(fields: [userId], references: [id],onDelete: Cascade)
-  TweetId Tweet  @relation(fields: [tweetId], references: [id],onDelete: Cascade)
+  UserId  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  TweetId Tweet  @relation(fields: [tweetId], references: [id], onDelete: Cascade)
   userId  String
   tweetId String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
 
   @@map("likes_to_users")
 }
 
 model Follower {
   id         String @id @default(uuid())
-  User       User   @relation("follower", fields: [userId], references: [id],onDelete: Cascade)
-  Followed   User   @relation("followed", fields: [followedId], references: [id],onDelete: Cascade)
+  User       User   @relation("follower", fields: [userId], references: [id], onDelete: Cascade)
+  Followed   User   @relation("followed", fields: [followedId], references: [id], onDelete: Cascade)
   userId     String //eu vou seguir
   followedId String @unique //o fulano de tal
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
+  @@map("follower")
 }

@@ -1,8 +1,8 @@
 POST http://localhost:3333/retweets/ HTTP/1.1
 content-type: application/json
-Authorization: 19a7aae5-b12c-4be2-90f9-ec987e37efd5
+Authorization: cc57be7c-d9a5-4070-a878-9cbb2fb9b14f
 
 {
-    "content": "BLAÁ BLAÁ BLA BLAAAA.",
-    "tweetId": "65a446df-d525-41f4-ba31-e4b5d6875919"
+    "content": "Cheguei @nat, não precisa mais se sentir sozinha! Heheh 😁",
+    "tweetId": "861d4f94-1439-43f8-945a-7d7bd734c9c9"
 }

@@ -135,11 +135,7 @@ class UserService {
         id
       }
     })
-if(user){
-  //fazer uma função que delete todos os likes, todos os tweets, todos
-  //os follows, etc etc, sem passar nenhum parametro
 
-}
     const result = await repository.user.delete({
       where: {
         id:user!.id
