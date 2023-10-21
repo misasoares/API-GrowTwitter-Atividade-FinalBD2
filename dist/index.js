@@ -1,0 +1,23 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
+const user_routes_1 = require("./routes/user.routes");
+const tweet_routes_1 = require("./routes/tweet.routes");
+const auth_routes_1 = require("./routes/auth.routes");
+const retweet_routes_1 = require("./routes/retweet.routes");
+const like_routes_1 = require("./routes/like.routes");
+const follower_routes_1 = require("./routes/follower.routes");
+const app = (0, express_1.default)();
+app.use(express_1.default.json());
+app.use((0, cors_1.default)());
+app.use("/users", (0, user_routes_1.userRoutes)());
+app.use("/tweets", (0, tweet_routes_1.tweetRoutes)());
+app.use("/retweets", (0, retweet_routes_1.retweetRoutes)());
+app.use("/auth", (0, auth_routes_1.authRoutes)());
+app.use("/likes", (0, like_routes_1.likeRoutes)());
+app.use("/follows", (0, follower_routes_1.followRoutes)());
+app.listen(3333, () => console.log("Server running at port: 3333."));
