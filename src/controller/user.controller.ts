@@ -16,6 +16,7 @@ export default class UserController {
       const { name, email, username, password } = req.body;
 
       const result = await userService.create({ name, email, username, password });
+     
       return res.status(200).send(result);
     } catch (error) {
       return res.status(500).send(error);
@@ -41,6 +42,16 @@ export default class UserController {
       const result = await userService.getById(userID);
 
       return res.status(200).send(result);
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
+  public async getAllById(req: Request, res: Response){
+    try {
+      const { id } = req.params
+      const result = await userService.getAllByid(id)
+      return res.status(200).send(result)
     } catch (error) {
       return res.status(500).send(error);
     }

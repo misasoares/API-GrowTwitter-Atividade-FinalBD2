@@ -48,6 +48,16 @@ export default class TweetController {
     }
   }
 
+  public async deleteAll(req: Request, res: Response) {
+    try {
+
+      const result = await tweetService.deleteAll();
+
+      return res.status(200).send(result);
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
   public async delete(req: Request, res: Response) {
     try {
       const { id, userID } = req.body;

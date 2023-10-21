@@ -1,7 +1,7 @@
 POST http://localhost:3333/follows/ HTTP/1.1
 content-type: application/json
-Authorization: b7729151-2d08-473a-9ff8-a33b36b30bd6
+Authorization: 3a86aa0f-4ee6-47a7-bb01-6695513bec76
 
 {
-    "followedId": "32ec8590-fec0-43ae-89dd-6963b5143c9e"
+    "followedId": "17e91052-63bb-41c0-adc4-3520fa319b2a"
 }

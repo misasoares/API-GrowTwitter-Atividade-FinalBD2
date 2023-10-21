@@ -88,7 +88,16 @@ class TweetService {
     };
   }
 
+  public async deleteAll():Promise<ResponseDto> {
+    const result = await repository.tweet.deleteMany();
+    return {
+      code:200,
+      message:`Tweets deletados com sucesso.`,
+      data:result
+    };
+  }
   public async delete(data: DeleteTweetDto):Promise<ResponseDto> {
+
     const result = await repository.tweet.delete({
       where: {
         userId: data.userID,

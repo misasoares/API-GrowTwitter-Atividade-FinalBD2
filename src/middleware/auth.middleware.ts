@@ -15,7 +15,7 @@ async function authMiddleware(req: Request, res: Response, next: NextFunction) {
 		
 		const result = await userService.getUserByToken(token as string);
 		
-		if (!result) {
+		if (!result.data) {
 			return res.status(401).send({
 				code: 401,
 				message: 'Authentication token fail',

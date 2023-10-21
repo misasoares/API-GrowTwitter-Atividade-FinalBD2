@@ -4,12 +4,14 @@ import authMiddleware from "../middleware/auth.middleware";
 
 export const userRoutes = () => {
   const router = Router();
+  const controller = new UserController()
 
-  router.post("/", new UserController().create);
-  router.get("/", authMiddleware, new UserController().list);
-  router.get("/me", authMiddleware, new UserController().getById);
-  router.put("/", authMiddleware, new UserController().update);
-  router.delete("/delete", authMiddleware, new UserController().delete);
+  router.post("/", controller.create);
+  router.get("/", authMiddleware, controller.list);
+  router.get("/me", authMiddleware, controller.getById);
+  router.get("/:id", controller.getAllById);
+  router.put("/", authMiddleware, controller.update);
+  router.delete("/delete", authMiddleware, controller.delete);
 
   return router;
 };

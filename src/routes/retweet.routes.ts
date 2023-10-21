@@ -5,12 +5,13 @@ import authMiddleware from "../middleware/auth.middleware"
 
 export const retweetRoutes = ()=>{
     const router = Router()
+    const controller = new RetweetController()
 
-    router.post('/',authMiddleware, new RetweetController().create)
-    router.get('/', authMiddleware, new RetweetController().list)
-    router.put('/', authMiddleware, new RetweetController().update)
-    router.delete('/', authMiddleware, new RetweetController().delete)
-    router.get('/listar-by-user', authMiddleware, new RetweetController().listByUserId)
+    router.post('/',authMiddleware, controller.create)
+    router.get('/', authMiddleware, controller.list)
+    router.put('/', authMiddleware, controller.update)
+    router.delete('/', authMiddleware, controller.delete)
+    router.get('/listar-by-user', authMiddleware, controller.listByUserId)
    
 
     return router

@@ -5,12 +5,15 @@ import authMiddleware from "../middleware/auth.middleware"
 export const tweetRoutes = ()=>{
     const router = Router()
 
-    router.post('/create', authMiddleware, new TweetController().create)
-    router.get('/list-by-user', authMiddleware, new TweetController().listByIdUser )
-    router.get('/', authMiddleware, new TweetController().list )
-    router.get('/unique-tweet/:idTweet', authMiddleware, new TweetController().showUniqueTweet )
-    router.put('/', authMiddleware, new TweetController().update )
-    router.delete('/', authMiddleware, new TweetController().delete )
+    const controller = new TweetController()
+
+    router.post('/', authMiddleware, controller.create)
+    router.get('/list-by-user', authMiddleware, controller.listByIdUser )
+    router.get('/', authMiddleware, controller.list )
+    router.get('/unique-tweet/:idTweet', authMiddleware, controller.showUniqueTweet )
+    router.put('/', authMiddleware, controller.update )
+    router.delete('/', authMiddleware, controller.delete )
+    router.delete('/all',  controller.deleteAll )
 
     return router
 }

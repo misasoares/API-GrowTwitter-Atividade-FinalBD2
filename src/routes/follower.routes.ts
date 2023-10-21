@@ -4,11 +4,12 @@ import authMiddleware from "../middleware/auth.middleware";
 
 export const followRoutes = () => {
   const router = Router();
+  const controller = new FollowController()
 
-  router.post("/", authMiddleware, new FollowController().create);
-  router.get("/listAllWhoIFollow", authMiddleware, new FollowController().listAllWhoIFollow);
-  router.get("/listWhoFollowMe", authMiddleware, new FollowController().listWhoFollowMe);
-  router.delete('/delete/:followedId', authMiddleware, new FollowController().deleteWhoIFollow)
+  router.post("/", authMiddleware, controller.create);
+  router.get("/listAllWhoIFollow", authMiddleware, controller.listAllWhoIFollow);
+  router.get("/listWhoFollowMe", authMiddleware, controller.listWhoFollowMe);
+  router.delete('/delete/:followedId', authMiddleware, controller.deleteWhoIFollow)
   
   return router;
 };

@@ -9,10 +9,10 @@ datasource db {
 
 model User {
   id       String  @id @default(uuid())
-  name     String  @db.VarChar(35)
+  name     String  @db.VarChar(100)
   email    String  @unique @db.VarChar(30)
   username String  @unique @db.VarChar(10)
-  password String  @db.VarChar(20)
+  password String  @db.VarChar(64)
   token    String? @unique
   Tweets   Tweet[]
 
@@ -33,7 +33,7 @@ model Tweet {
   content String @db.VarChar(500)
   type    String @db.VarChar(5) //tweet ou retweet
   User    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId  String
+  userId  String @map("user_id")
 
   Retweet Retweet[]
 
@@ -46,25 +46,29 @@ model Tweet {
 }
 
 model Retweet {
-  id      String @id @default(uuid())
-  content String @db.VarChar(500)
-  Tweet   Tweet  @relation(fields: [tweetId], references: [id], onDelete: Cascade)
-  tweetId String
-  User    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId  String
+  id      String  @id @default(uuid())
+  content String  @db.VarChar(500)
+  Tweet   Tweet?  @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+  tweetId String? @map("tweet_id")
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")
+  Likes     Likes[]
 
   @@map("retweet")
 }
 
 model Likes {
-  id      String @id @default(uuid())
-  UserId  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  TweetId Tweet  @relation(fields: [tweetId], references: [id], onDelete: Cascade)
-  userId  String
-  tweetId String
+  id        String   @id @default(uuid())
+  UserId    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  TweetId   Tweet?   @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+  RetweetId Retweet? @relation(fields: [retweetId], references: [id], onDelete: Cascade)
+  userId    String   @map("user_id")
+  tweetId   String?  @map("tweet_id")
+  retweetId String?  @map("retweet_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")
@@ -76,8 +80,8 @@ model Follower {
   id         String @id @default(uuid())
   User       User   @relation("follower", fields: [userId], references: [id], onDelete: Cascade)
   Followed   User   @relation("followed", fields: [followedId], references: [id], onDelete: Cascade)
-  userId     String //eu vou seguir
-  followedId String @unique //o fulano de tal
+  userId     String @map("user_id") //eu vou seguir
+  followedId String @unique @map("followed_id") //o fulano de tal
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")

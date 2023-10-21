@@ -2,15 +2,21 @@ import repository from "../database/prisma.database";
 import { CreateLikeDto, DeleteLikeDto } from "../dtos/like.dto";
 import { ResponseDto } from "../dtos/response.dto";
 import { Like } from "../model/like.model";
+import retweetService from "./retweet.service";
 import tweetService from "./tweet.service";
 import userService from "./user.service";
 
 class LikeService {
   public async create(data: CreateLikeDto): Promise<ResponseDto> {
-    const like = new Like(data.userID, data.tweetId);
+    if(!data.retweetId && !data.tweetId){
+      return {
+        code:404,
+        message:"Não foi selecionado nenhum conteudo para curtir."
+      }
+    }
+    const like = new Like(data.userID, data.tweetId, data.retweetId);
 
     const user = await userService.getById(data.userID);
-    const tweet = await tweetService.showUniqueTweet(data.tweetId);
 
     if (!user) {
       return {
@@ -19,34 +25,71 @@ class LikeService {
       };
     }
 
-    if (!tweet) {
+    if (data.tweetId) {
+      const tweet = await tweetService.showUniqueTweet(data.tweetId);
+      const createLike = await repository.likes.create({
+        data: {
+          userId: user.data.id,
+          tweetId: tweet.data.id,
+        },
+        include: {
+          TweetId: true,
+        },
+      });
+
+      if (!createLike) {
+        return {
+          code: 500,
+          message: "Não foi possível curtir este tweet.",
+        };
+      }
+
+      const userWhoTweeted = await repository.user.findUnique({
+        where: {
+          id: createLike.TweetId!.userId,
+        },
+      });
+
       return {
-        code: 404,
-        message: "Tweet não encontrado.",
+        code: 201,
+        message: `Você curtiu o tweet: '${createLike.TweetId!.content}' do usuário ${userWhoTweeted!.username}`,
+        data: createLike,
       };
     }
 
-    const createLike = await repository.likes.create({
-      data: {
-        userId: user.data.id,
-        tweetId: tweet.data.id,
-      },
-      include: {
-        TweetId: true,
-      },
-    });
+    if (data.retweetId) {
+      const retweet = await retweetService.showUniqueRetweet(data.retweetId);
 
-    const userWhoTweeted = await repository.user.findUnique({
-      where: {
-        id: createLike.TweetId.userId,
-      },
-    });
+      if (retweet.code !== 200) {
+        return { code: 500, message: "Retweet não encontrado." };
+      }
+
+      const createLike = await repository.likes.create({
+        data: {
+          userId: user.data.id,
+          retweetId: retweet.data.id,
+        },
+        include: {
+          RetweetId: true,
+        },
+      });
+
+      const userWhoRetweeted = await repository.user.findUnique({
+        where: {
+          id: createLike.RetweetId!.userId,
+        },
+      });
+      return {
+        code: 201,
+        message: `Você curtiu o retweet: '${createLike.RetweetId!.content}' do usuário ${userWhoRetweeted!.username}`,
+        data: createLike,
+      };
+    }
 
     return {
-      code: 201,
-      message: `Você curtiu o tweet: '${createLike.TweetId.content}' do usuário ${userWhoTweeted!.username}`,
-      data: createLike,
-    };
+      code:500,
+      message:"Não foi possível deixar o seu like, houve algum erro ao localizar o conteudo."
+    }
   }
 
   public async list(): Promise<ResponseDto> {
@@ -80,7 +123,6 @@ class LikeService {
   }
 
   public async delete(data: DeleteLikeDto): Promise<ResponseDto> {
-    
     const result = await repository.likes.delete({
       where: {
         id: data.id,

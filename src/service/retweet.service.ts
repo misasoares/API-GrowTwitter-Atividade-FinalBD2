@@ -2,7 +2,7 @@ import repository from "../database/prisma.database";
 import { ResponseDto } from "../dtos/response.dto";
 import { DeleteRetweetDto, RetweetCreateDto, UpdateRetweetDto } from "../dtos/retweet.dto";
 import { Retweet } from "../model/retweet.model";
-import userService from "./user.service";
+
 
 class RetweetService {
   public async create(data: RetweetCreateDto): Promise<ResponseDto> {
@@ -25,7 +25,7 @@ class RetweetService {
 
     return {
       code: 201,
-      message: `Você retweetou '${createdRetweet.content}' no tweet '${createdRetweet.Tweet.content}'.`,
+      message: `Você retweetou '${createdRetweet.content}' no tweet '${createdRetweet.Tweet!.content}'.`,
       data: createdRetweet,
     };
   }
@@ -74,7 +74,7 @@ class RetweetService {
 
     return {
       code: 200,
-      message: `Você apagou seu retweet '${result.content} do tweet '${result.Tweet.content}'`,
+      message: `Você apagou seu retweet '${result.content} do tweet '${result.Tweet!.content}'`,
       data: result,
     };
   }
@@ -108,6 +108,22 @@ class RetweetService {
       message: `Lista de todos os retweets do ${result[0].User.username}`,
       data: result,
     };
+  }
+
+  public async showUniqueRetweet(id:string): Promise<ResponseDto>{
+    
+    const result = await repository.retweet.findUnique({
+      where:{
+        id
+      }
+    })
+
+
+    return {
+      code:200,
+      message: "Retweet encontrado com sucesso.",
+      data: result
+    }
   }
 }
 export default new RetweetService();

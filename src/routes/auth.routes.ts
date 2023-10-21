@@ -4,9 +4,10 @@ import authMiddleware from "../middleware/auth.middleware";
 
 export const authRoutes = () => {
   const router = Router();
+  const controller = new AuthController()
 
-  router.post("/login", new AuthController().login);
-  router.get("/logout", authMiddleware, new AuthController().logout);
+  router.post("/login", controller.login);
+  router.get("/logout", authMiddleware, controller.logout);
 
   return router;
 };

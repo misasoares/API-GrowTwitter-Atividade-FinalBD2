@@ -1,11 +1,8 @@
-import FollowController from "../controller/follow.controller";
-import LikeController from "../controller/like.controller";
-import RetweetController from "../controller/retweet.controller";
-import TweetController from "../controller/tweet.controller";
 import repository from "../database/prisma.database";
 import { ResponseDto } from "../dtos/response.dto";
 import { CreateUserDto, UserUpdateDto } from "../dtos/user.dto";
 import { User } from "../model/user.model";
+const bcrypt = require("bcrypt");
 
 class UserService {
   public async list(): Promise<ResponseDto> {
@@ -18,15 +15,19 @@ class UserService {
   }
 
   public async create(data: CreateUserDto): Promise<ResponseDto> {
-    if(data.username!.length > 10){
+    console.log(data)
+    if (data.username!.length > 10) {
       return {
-        code:400,
-        message:`Username excedeu o limite de characteres.`
-      }
+        code: 400,
+        message: `Username excedeu o limite de characteres.`,
+      };
     }
-    
-    const user = new User(data.name, data.email, data.username, data.password);
 
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(data.password, saltRounds);
+
+    const user = new User(data.name, data.email, data.username, hashedPassword);
+  
     const createdUser = await repository.user.create({
       data: {
         name: user.name,
@@ -44,13 +45,20 @@ class UserService {
   }
 
   public async getByUsernameAndPassword(username: string, password: string): Promise<ResponseDto> {
+   
+    
     const user = await repository.user.findUnique({
       where: {
         username: username,
-        password: password,
       },
     });
+    const isPasswordValid = await bcrypt.compare(password, user!.password);
 
+    if (!isPasswordValid) {
+      return { 
+        code:404,
+        message: "Username ou senha incorretos." };
+    }
     return {
       code: 200,
       message: `Sucesso.`,
@@ -73,25 +81,24 @@ class UserService {
   }
 
   public async update(data: UserUpdateDto): Promise<ResponseDto> {
-   
     const user = await repository.user.findUnique({
       where: {
         username: data.username,
       },
     });
-  
-    if(data.username!.length > 10){
+
+    if (data.username!.length > 10) {
       return {
-        code:400,
-        message:`Username excedeu o limite de characteres.`
-      }
+        code: 400,
+        message: `Username excedeu o limite de characteres.`,
+      };
     }
-  
-    if(!user){
+
+    if (!user) {
       return {
-        code:404,
-        message:`Usuário não encontrado.`,
-      }
+        code: 404,
+        message: `Usuário não encontrado.`,
+      };
     }
 
     const updatedUser = await repository.user.update({
@@ -129,25 +136,35 @@ class UserService {
   }
 
   public async delete(id: string): Promise<ResponseDto> {
-
     const user = await repository.user.findUnique({
-      where:{
-        id
-      }
-    })
-
-    const result = await repository.user.delete({
       where: {
-        id:user!.id
+        id,
       },
     });
 
-    
+    const result = await repository.user.delete({
+      where: {
+        id: user!.id,
+      },
+    });
 
     return {
       code: 200,
       message: `Usuário deletado com sucesso.`,
       data: result,
+    };
+  }
+
+  public async getAllByid(id: string): Promise<ResponseDto> {
+    const user = await repository.user.findUnique({
+      where: {
+        id,
+      },
+    });
+    return {
+      code: 200,
+      message: "Lista de todos os usuarios",
+      data: user,
     };
   }
 }

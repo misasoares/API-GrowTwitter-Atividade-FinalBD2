@@ -4,9 +4,9 @@ import likeService from "../service/like.service";
 export default class LikeController {
   public async create(req: Request, res: Response) {
     try {
-      const { userID, tweetId } = req.body;
+      const { userID, tweetId, retweetId } = req.body;
 
-      const result = await likeService.create({ userID, tweetId });
+      const result = await likeService.create({ userID, tweetId, retweetId });
 
       return res.status(200).send(result);
     } catch (error) {

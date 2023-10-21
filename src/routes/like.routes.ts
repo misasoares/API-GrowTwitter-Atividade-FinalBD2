@@ -5,11 +5,12 @@ import authMiddleware from "../middleware/auth.middleware";
 
 export const likeRoutes = () => {
   const router = Router();
+  const controller = new LikeController()
 
-  router.post("/", authMiddleware, new LikeController().create);
-  router.get("/list", authMiddleware, new LikeController().list)
-  router.get("/listAllLikesByUser", authMiddleware, new LikeController().listAllLikesByUser)
-  router.delete("/:id", authMiddleware, new LikeController().delete)
+  router.post("/", authMiddleware, controller.create);
+  router.get("/list", authMiddleware, controller.list)
+  router.get("/listAllLikesByUser", authMiddleware, controller.listAllLikesByUser)
+  router.delete("/:id", authMiddleware, controller.delete)
 
 
   return router;
