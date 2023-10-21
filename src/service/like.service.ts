@@ -8,11 +8,11 @@ import userService from "./user.service";
 
 class LikeService {
   public async create(data: CreateLikeDto): Promise<ResponseDto> {
-    if(!data.retweetId && !data.tweetId){
+    if (!data.retweetId && !data.tweetId) {
       return {
-        code:404,
-        message:"Não foi selecionado nenhum conteudo para curtir."
-      }
+        code: 404,
+        message: "Não foi selecionado nenhum conteudo para curtir.",
+      };
     }
     const like = new Like(data.userID, data.tweetId, data.retweetId);
 
@@ -87,9 +87,9 @@ class LikeService {
     }
 
     return {
-      code:500,
-      message:"Não foi possível deixar o seu like, houve algum erro ao localizar o conteudo."
-    }
+      code: 500,
+      message: "Não foi possível deixar o seu like, houve algum erro ao localizar o conteudo.",
+    };
   }
 
   public async list(): Promise<ResponseDto> {
@@ -113,6 +113,11 @@ class LikeService {
             content: true,
           },
         },
+        RetweetId: {
+          select: {
+            content: true,
+          },
+        },
       },
     });
     return {
@@ -130,6 +135,11 @@ class LikeService {
       },
       include: {
         TweetId: {
+          select: {
+            content: true,
+          },
+        },
+        RetweetId: {
           select: {
             content: true,
           },
