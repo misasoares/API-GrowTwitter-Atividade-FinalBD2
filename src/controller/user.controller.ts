@@ -50,7 +50,7 @@ export default class UserController {
   public async getAllById(req: Request, res: Response){
     try {
       const { id } = req.params
-      const result = await userService.getAllByid(id)
+      const result = await userService.getByid(id)
       return res.status(200).send(result)
     } catch (error) {
       return res.status(500).send(error);

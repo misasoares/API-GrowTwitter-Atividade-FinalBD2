@@ -155,7 +155,7 @@ console.log("-------------")
     };
   }
 
-  public async getAllByid(id: string): Promise<ResponseDto> {
+  public async getByid(id: string): Promise<ResponseDto> {
     const user = await repository.user.findUnique({
       where: {
         id,
