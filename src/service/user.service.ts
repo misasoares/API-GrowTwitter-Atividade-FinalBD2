@@ -22,12 +22,12 @@ class UserService {
         message: `Username excedeu o limite de characteres.`,
       };
     }
-
+console.log("----before hashed password")
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(data.password, saltRounds);
 
     const user = new User(data.name, data.email, data.username, hashedPassword);
-  
+  console.log(user, "------ after hashed password")
     const createdUser = await repository.user.create({
       data: {
         name: user.name,
