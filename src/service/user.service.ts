@@ -15,7 +15,7 @@ class UserService {
   }
 
   public async create(data: CreateUserDto): Promise<ResponseDto> {
-    console.log(data)
+
     if (data.username!.length > 10) {
       return {
         code: 400,
