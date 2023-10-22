@@ -17,5 +17,6 @@ app.use("/retweets", retweetRoutes());
 app.use("/auth", authRoutes());
 app.use("/likes", likeRoutes());
 app.use("/follows", followRoutes());
+app.get("/", ()=>{ message: "Rodando!"})
 
 app.listen(3333, () => console.log("Server running at port: 3333."));
