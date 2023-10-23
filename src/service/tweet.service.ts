@@ -8,7 +8,9 @@ class TweetService {
   public async list(): Promise<ResponseDto> {
     const result = await repository.tweet.findMany({
       include:{
-        User:true
+        User:true,
+        Likes:true,
+        Retweet:true
       }
     });
     return {
