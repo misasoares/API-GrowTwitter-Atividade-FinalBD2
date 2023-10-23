@@ -4,8 +4,9 @@ import tweetService from "../service/tweet.service";
 export default class TweetController {
   public async list(req: Request, res: Response) {
     try {
-      const result = await tweetService.list();
-console.log(result)
+      const {userID} = req.body
+      const result = await tweetService.list(userID);
+
       return res.status(200).send(result);
     } catch (error) {
       return res.status(500).send(error);

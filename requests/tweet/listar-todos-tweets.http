@@ -1,2 +1,3 @@
-GET https://api-growtwitter-misael.onrender.com/tweets/ HTTP/1.1
-Authorization:3292d190-5e7b-4505-b832-08a322e59345
+GET http://localhost:3333/tweets/ HTTP/1.1
+Authorization:b6ba60b5-0fb6-4309-853a-4cc1f919f8a4
+

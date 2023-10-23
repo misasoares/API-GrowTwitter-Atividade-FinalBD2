@@ -1,8 +1,8 @@
 POST http://localhost:3333/tweets/ HTTP/1.1
 content-type: application/json
-Authorization: 3b14ac73-a6fd-429e-b2bf-193b2a510c4c
+Authorization: 7b1180b5-3cde-44b6-a98a-e0edf8163aeb
 
 {
-    "content": "Ea rapaziada.",
+    "content": "Ea rapaziada. 2",
     "type": "tweet"
 }

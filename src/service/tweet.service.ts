@@ -2,10 +2,10 @@ import repository from "../database/prisma.database";
 import { ResponseDto } from "../dtos/response.dto";
 import { CreateTweet, DeleteTweetDto, UpdateTweetDto } from "../dtos/tweet.dto";
 import { Tweet } from "../model/tweet.model";
-import userService from "./user.service";
+
 
 class TweetService {
-  public async list(): Promise<ResponseDto> {
+  public async list(userID:string): Promise<ResponseDto> {
     const result = await repository.tweet.findMany({
       include:{
         User:{
@@ -13,26 +13,24 @@ class TweetService {
             id:true,
             username:true,
             name:true,
-            token:true,
-            Retweet:{
-              select:{
-                id:true,
-                tweetId:true,
-                content:true
-              },
-            },
             LikesToUser:{
               select:{
                 id:true,
                 retweetId:true,
-                tweetId:true
+                tweetId:true,
+                
+              },where:{
+                userId:userID
               }
             }
           }
         },
-        Likes:true,
-        Retweet:true
-      }
+        
+      },orderBy:[
+        {
+          createdAt:'desc'
+        }
+      ]
     });
     return {
       code: 200,
