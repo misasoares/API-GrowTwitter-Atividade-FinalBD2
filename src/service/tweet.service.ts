@@ -6,7 +6,11 @@ import userService from "./user.service";
 
 class TweetService {
   public async list(): Promise<ResponseDto> {
-    const result = await repository.tweet.findMany();
+    const result = await repository.tweet.findMany({
+      include:{
+        User:true
+      }
+    });
     return {
       code: 200,
       message: `Lista de todos os tweets:`,

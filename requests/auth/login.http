@@ -1,8 +1,8 @@
-POST http://localhost:3333/auth/login HTTP/1.1
+POST https://api-growtwitter-misael.onrender.com/auth/login HTTP/1.1
 content-type: application/json
 
 {
-    "username": "@carlos",
+    "username": "@misa",
     "password": "123"
 }
 

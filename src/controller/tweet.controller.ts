@@ -5,7 +5,7 @@ export default class TweetController {
   public async list(req: Request, res: Response) {
     try {
       const result = await tweetService.list();
-
+console.log(result)
       return res.status(200).send(result);
     } catch (error) {
       return res.status(500).send(error);

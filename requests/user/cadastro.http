@@ -1,9 +1,9 @@
-POST http://localhost:3333/users/ HTTP/1.1
+POST https://api-growtwitter-misael.onrender.com/users/ HTTP/1.1
 content-type: application/json
 
 {
-    "name": "simba",
-    "email": "simba@gmail.com",
-    "username": "@simba",
+    "name": "misa",
+    "email": "misa@gmail.com",
+    "username": "@misa",
     "password": "123"
 }

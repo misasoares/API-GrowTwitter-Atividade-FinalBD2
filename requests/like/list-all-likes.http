@@ -1,2 +1,2 @@
-GET http://localhost:3333/likes/list HTTP/1.1
-Authorization:0be3d182-b782-4978-a4d8-4090b3e4559c
+GET https://api-growtwitter-misael.onrender.com/likes/list HTTP/1.1
+Authorization:59cdd720-c87d-4a1e-a3cc-f386c76fa45c
