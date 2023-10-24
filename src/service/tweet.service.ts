@@ -76,11 +76,19 @@ class TweetService {
     };
   }
 
-  public async showUniqueTweet(id: string): Promise<ResponseDto> {
+  public async showUniqueTweet(id: string, userID:string): Promise<ResponseDto> {
     const result = await repository.tweet.findUnique({
       where: {
         id,
-      },
+      },include:{
+        Likes:{
+          select:{
+            userId:true
+          },where:{
+            userId:userID
+          }
+        }
+      }
     });
 
     return {

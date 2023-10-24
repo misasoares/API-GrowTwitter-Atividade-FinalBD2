@@ -73,9 +73,10 @@ export default class TweetController {
 
   public async showUniqueTweet(req: Request, res: Response) {
     try {
+      const {userID}=req.body
       const { idTweet } = req.params;
 
-      const result = await tweetService.showUniqueTweet(idTweet);
+      const result = await tweetService.showUniqueTweet(idTweet,userID as string);
 
       return res.status(200).send(result);
     } catch (error) {
