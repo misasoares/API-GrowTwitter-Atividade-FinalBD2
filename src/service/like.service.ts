@@ -25,18 +25,15 @@ class LikeService {
       };
     }
 
+    if(!data.tweetId){
+      return {
+        code: 404,
+        message: "Tweet não encontrado",
+      };
+    }
+
     if (data.tweetId) {
       const tweet = await tweetService.showUniqueTweet(data.tweetId, data.userID);
-
-      console.log(data.userID,tweet.data.Like[0].userId)
-
-      // if(data.userID === tweet.data.Like[0].userId){
-      //   console.log("oi")
-      //   return {
-      //     code:400,
-      //     message:"Não é possivel curtir duas vezes o mesmo tweet."
-      //   }
-      // }
 
       const createLike = await repository.likes.create({
         data: {
@@ -44,7 +41,28 @@ class LikeService {
           tweetId: tweet.data.id,
         },
         include: {
-          TweetId: true,
+          TweetId: {
+            select:{
+              id:true,
+              userId:true,
+              content:true,
+              User:{
+                select:{
+                  id:true,
+                  name:true,
+                  username:true,
+                },
+              }
+            }
+          },
+          UserId:{
+            select:{
+              id:true,
+              username:true,
+              name:true,
+              
+            }
+          }
         },
       });
 

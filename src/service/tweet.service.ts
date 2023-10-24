@@ -18,13 +18,20 @@ class TweetService {
                 id:true,
                 retweetId:true,
                 tweetId:true,
-                
+                userId:true
               },where:{
                 userId:userID
               }
             }
           }
-        },
+        },Likes:{
+          select:{
+            id:true,
+            userId:true,
+            tweetId:true,
+            retweetId:true
+          }
+        }
         
       },orderBy:[
         {
