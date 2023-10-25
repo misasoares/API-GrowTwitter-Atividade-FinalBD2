@@ -22,7 +22,7 @@ class TweetService {
               },where:{
                 userId:userID
               }
-            }
+            },
           }
         },Likes:{
           select:{
@@ -30,6 +30,29 @@ class TweetService {
             userId:true,
             tweetId:true,
             retweetId:true
+          }
+        },Retweet:{
+          select:{
+            id:true,
+            content:true,
+            Likes:{
+              select:{
+                id:true,
+                userId:true,
+                TweetId:{
+                  select:{
+                    content:true,
+                    id:true,
+                    Likes:{
+                      select:{
+                        id:true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            
           }
         }
         

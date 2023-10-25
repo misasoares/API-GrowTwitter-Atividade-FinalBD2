@@ -7,6 +7,12 @@ export class AuthController {
   public async login(req: Request, res: Response) {
     try {
       const { username, password } = req.body;
+      if(!username || password){
+        return res.status(404).send({
+          code: 404,
+          message: "Preencha todos os campos.",
+        });
+      }
 
       const user = await userService.getByUsernameAndPassword(username, password);
 
