@@ -2,19 +2,18 @@ import repository from "../database/prisma.database";
 import { CreateLikeDto, DeleteLikeDto } from "../dtos/like.dto";
 import { ResponseDto } from "../dtos/response.dto";
 import { Like } from "../model/like.model";
-import retweetService from "./retweet.service";
 import tweetService from "./tweet.service";
 import userService from "./user.service";
 
 class LikeService {
   public async create(data: CreateLikeDto): Promise<ResponseDto> {
-    if (!data.retweetId && !data.tweetId) {
+    if (!data.tweetId) {
       return {
         code: 404,
         message: "Não foi selecionado nenhum conteudo para curtir.",
       };
     }
-    const like = new Like(data.userID, data.tweetId, data.retweetId);
+    const like = new Like(data.userID, data.tweetId);
 
     const user = await userService.getById(data.userID);
 
@@ -22,13 +21,6 @@ class LikeService {
       return {
         code: 404,
         message: "Usuario não está logado",
-      };
-    }
-
-    if(!data.tweetId){
-      return {
-        code: 404,
-        message: "Tweet não encontrado",
       };
     }
 
@@ -42,27 +34,26 @@ class LikeService {
         },
         include: {
           TweetId: {
-            select:{
-              id:true,
-              userId:true,
-              content:true,
-              User:{
-                select:{
-                  id:true,
-                  name:true,
-                  username:true,
+            select: {
+              id: true,
+              userId: true,
+              content: true,
+              User: {
+                select: {
+                  id: true,
+                  name: true,
+                  username: true,
                 },
-              }
-            }
+              },
+            },
           },
-          UserId:{
-            select:{
-              id:true,
-              username:true,
-              name:true,
-              
-            }
-          }
+          UserId: {
+            select: {
+              id: true,
+              username: true,
+              name: true,
+            },
+          },
         },
       });
 
@@ -73,47 +64,47 @@ class LikeService {
         };
       }
 
-      const userWhoTweeted = await repository.user.findUnique({
-        where: {
-          id: createLike.TweetId!.userId,
-        },
-      });
+      // const userWhoTweeted = await repository.user.findUnique({
+      //   where: {
+      //     id: createLike.TweetId!.userId,
+      //   },
+      // });
 
       return {
         code: 201,
-        message: `Você curtiu o tweet: '${createLike.TweetId!.content}' do usuário ${userWhoTweeted!.username}`,
+        message: `Você curtiu o tweet: '${createLike.TweetId!.content}' do usuário ${createLike.TweetId!.User!.username}`,
         data: createLike,
       };
     }
 
-    if (data.retweetId) {
-      const retweet = await retweetService.showUniqueRetweet(data.retweetId);
+    // if (data.retweetId) {
+    //   const retweet = await retweetService.showUniqueRetweet(data.retweetId);
 
-      if (retweet.code !== 200) {
-        return { code: 500, message: "Retweet não encontrado." };
-      }
+    //   if (retweet.code !== 200) {
+    //     return { code: 500, message: "Retweet não encontrado." };
+    //   }
 
-      const createLike = await repository.likes.create({
-        data: {
-          userId: user.data.id,
-          retweetId: retweet.data.id,
-        },
-        include: {
-          RetweetId: true,
-        },
-      });
+    //   const createLike = await repository.likes.create({
+    //     data: {
+    //       userId: user.data.id,
+    //       retweetId: retweet.data.id,
+    //     },
+    //     include: {
+    //       RetweetId: true,
+    //     },
+    //   });
 
-      const userWhoRetweeted = await repository.user.findUnique({
-        where: {
-          id: createLike.RetweetId!.userId,
-        },
-      });
-      return {
-        code: 201,
-        message: `Você curtiu o retweet: '${createLike.RetweetId!.content}' do usuário ${userWhoRetweeted!.username}`,
-        data: createLike,
-      };
-    }
+    //   const userWhoRetweeted = await repository.user.findUnique({
+    //     where: {
+    //       id: createLike.RetweetId!.userId,
+    //     },
+    //   });
+    //   return {
+    //     code: 201,
+    //     message: `Você curtiu o retweet: '${createLike.RetweetId!.content}' do usuário ${userWhoRetweeted!.username}`,
+    //     data: createLike,
+    //   };
+    // }
 
     return {
       code: 500,
@@ -142,11 +133,6 @@ class LikeService {
             content: true,
           },
         },
-        RetweetId: {
-          select: {
-            content: true,
-          },
-        },
       },
     });
     return {
@@ -164,11 +150,6 @@ class LikeService {
       },
       include: {
         TweetId: {
-          select: {
-            content: true,
-          },
-        },
-        RetweetId: {
           select: {
             content: true,
           },

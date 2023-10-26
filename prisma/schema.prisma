@@ -16,7 +16,6 @@ model User {
   token    String? @unique
   Tweets   Tweet[]
 
-  Retweet  Retweet[]
   Follower Follower[] @relation("follower") //array de quem me segue
   Followed Follower[] @relation("followed") //array de quem eu sigo
 
@@ -31,7 +30,7 @@ model User {
 model Tweet {
   id      String @id @default(uuid())
   content String @db.VarChar(500)
-  type    String @db.VarChar(5) //tweet ou retweet
+  type    String @db.VarChar(7) //tweet ou retweet
   User    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId  String @map("user_id")
 
@@ -46,29 +45,26 @@ model Tweet {
 }
 
 model Retweet {
-  id      String  @id @default(uuid())
-  content String  @db.VarChar(500)
-  Tweet   Tweet?  @relation(fields: [tweetId], references: [id], onDelete: Cascade)
-  tweetId String? @map("tweet_id")
+  id String @id @default(uuid())
 
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @map("user_id")
+  retweetId String @map("retweet_id")
+
+  Tweet           Tweet?  @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+  tweetId String? @map("tweet_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")
-  Likes     Likes[]
 
   @@map("retweet")
 }
 
 model Likes {
-  id        String   @id @default(uuid())
-  UserId    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  TweetId   Tweet?   @relation(fields: [tweetId], references: [id], onDelete: Cascade)
-  RetweetId Retweet? @relation(fields: [retweetId], references: [id], onDelete: Cascade)
-  userId    String   @map("user_id")
-  tweetId   String?  @map("tweet_id")
-  retweetId String?  @map("retweet_id")
+  id      String @id @default(uuid())
+  UserId  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  TweetId Tweet? @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+
+  userId  String  @map("user_id")
+  tweetId String? @map("tweet_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")

@@ -1,3 +1,0 @@
-GET http://localhost:3333/retweets/ HTTP/1.1
-Authorization:cc57be7c-d9a5-4070-a878-9cbb2fb9b14f
-

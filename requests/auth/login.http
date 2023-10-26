@@ -2,7 +2,7 @@ POST http://localhost:3333/auth/login HTTP/1.1
 content-type: application/json
 
 {
-    "username": "@teste2",
+    "username": "@carlos",
     "password": "123"
 }
 

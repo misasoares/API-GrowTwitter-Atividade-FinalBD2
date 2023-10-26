@@ -27,9 +27,9 @@ export default class TweetController {
 
   public async create(req: Request, res: Response) {
     try {
-      const { content, type, userID } = req.body;
+      const { content, type, userID, tweetId } = req.body;
 
-      const result = await tweetService.create({ content, type, userID });
+      const result = await tweetService.create({ content, type, userID , tweetId });
 
       return res.status(200).send(result);
     } catch (error) {

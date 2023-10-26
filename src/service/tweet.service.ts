@@ -15,7 +15,7 @@ class TweetService {
             LikesToUser: {
               select: {
                 id: true,
-                retweetId: true,
+
                 tweetId: true,
                 userId: true,
               },
@@ -30,36 +30,6 @@ class TweetService {
             id: true,
             userId: true,
             tweetId: true,
-            retweetId: true,
-          },
-        },
-        Retweet: {
-          select: {
-            id: true,
-            content: true,
-            User: {
-              select: {
-                name: true,
-                username: true,
-              },
-            },
-            Likes: {
-              select: {
-                id: true,
-                userId: true,
-                TweetId: {
-                  select: {
-                    content: true,
-                    id: true,
-                    Likes: {
-                      select: {
-                        id: true,
-                      },
-                    },
-                  },
-                },
-              },
-            },
           },
         },
       },
@@ -96,7 +66,7 @@ class TweetService {
   }
 
   public async create(data: CreateTweet): Promise<ResponseDto> {
-    const tweet = new Tweet(data.content, data.type, data.userID);
+    const tweet = new Tweet(data.content, data.type, data.userID, data.tweetId);
 
     const createdTweet = await repository.tweet.create({
       data: {
@@ -105,6 +75,35 @@ class TweetService {
         userId: data.userID,
       },
     });
+
+    if (tweet.tweetId) {
+      const res = await repository.retweet.create({
+        data: {
+          retweetId: createdTweet.id,
+          tweetId: tweet.tweetId,
+        },
+        include: {
+          Tweet: {
+            select: {
+              content: true,
+              User: {
+                select: {
+                  username: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      
+      return {
+        code: 201,
+        message: `Você retweetou: '${createdTweet.content}, no tweet '${res.Tweet?.content} do usuario '${res.Tweet?.User.username}'`,
+        data: res,
+      };
+    }
+
     return {
       code: 201,
       message: `Você tweetou: '${createdTweet.content}'`,

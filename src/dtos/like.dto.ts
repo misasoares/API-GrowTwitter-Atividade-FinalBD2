@@ -1,7 +1,6 @@
 export interface CreateLikeDto {
   userID: string;
-  tweetId?: string;
-  retweetId?: string
+  tweetId: string;
 }
 
 export interface DeleteLikeDto {

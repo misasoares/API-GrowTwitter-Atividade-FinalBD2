@@ -1,8 +1,0 @@
-POST http://localhost:3333/retweets/ HTTP/1.1
-content-type: application/json
-Authorization: 3b14ac73-a6fd-429e-b2bf-193b2a510c4c
-
-{
-    "content": "Bamoo que tem oktober",
-    "tweetId": "81f8896d-f231-441c-99f7-b649e60796d3"
-}
