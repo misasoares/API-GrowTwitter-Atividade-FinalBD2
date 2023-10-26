@@ -31,7 +31,20 @@ class TweetService {
             userId: true,
             tweetId: true,
           },
-        },
+        },Retweet:{
+          select:{
+            id:true,
+            retweetId:true,
+            tweetId:true, 
+            Tweet:{
+              select:{
+                id:true,
+                content:true,
+                Likes:true
+              }
+            }
+          }
+        }
       },
       orderBy: [
         {
