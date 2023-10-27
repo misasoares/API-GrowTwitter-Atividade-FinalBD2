@@ -28,34 +28,22 @@ model User {
 }
 
 model Tweet {
-  id      String @id @default(uuid())
-  content String @db.VarChar(500)
-  type    String @db.VarChar(7) //tweet ou retweet
-  User    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId  String @map("user_id")
+  id              String  @id @default(uuid())
+  content         String  @db.VarChar(500)
+  type            String  @db.VarChar(7) // tweet ou retweet
+  User            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String  @map("user_id")
+  Likes           Likes[]
+  
+  originalTweetId String? @unique
+  originalTweet  Tweet?   @relation("Retweets", fields: [originalTweetId], references: [id])
+  retweets       Tweet[]  @relation("Retweets")
 
-  Retweet Retweet[]
-
-  Likes Likes[]
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt() @map("updated_at")
-
+  
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt() @map("updated_at")
+  
   @@map("tweet")
-}
-
-model Retweet {
-  id String @id @default(uuid())
-
-  retweetId String @map("retweet_id")
-
-  Tweet           Tweet?  @relation(fields: [tweetId], references: [id], onDelete: Cascade)
-  tweetId String? @map("tweet_id")
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt() @map("updated_at")
-
-  @@map("retweet")
 }
 
 model Likes {

@@ -1,9 +1,9 @@
 POST http://localhost:3333/tweets/ HTTP/1.1
 content-type: application/json
-Authorization: d1a30f73-ea8b-4113-8664-0f4cce81b1f0
+Authorization: 307749c6-5604-4c3a-883a-0bfff15d0f9e
 
 {
-    "content": "Oi, eu sou o carlos e estou retweetando o tweet do Misa!",
+    "content": "Será??",
     "type": "retweet",
-    "tweetId": "346ec319-4729-4c2a-a83a-636617ccc187"
+    "originalTweetId": "38b36cca-48ee-48bd-9c39-6f6c162ba75e"
 }

@@ -2,7 +2,7 @@ export interface CreateTweet {
   userID: string;
   content: string;
   type: string;
-  tweetId?:string
+  originalTweetId?:string 
 }
 
 export interface UpdateTweetDto extends Omit<CreateTweet, 'type'> {

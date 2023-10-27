@@ -4,54 +4,18 @@ import { CreateTweet, DeleteTweetDto, UpdateTweetDto } from "../dtos/tweet.dto";
 import { Tweet } from "../model/tweet.model";
 
 class TweetService {
-  public async list(userID: string): Promise<ResponseDto> {
+  public async list(): Promise<ResponseDto> {
     const result = await repository.tweet.findMany({
-      include: {
-        User: {
-          select: {
-            id: true,
-            username: true,
-            name: true,
-            LikesToUser: {
-              select: {
-                id: true,
-
-                tweetId: true,
-                userId: true,
-              },
-              where: {
-                userId: userID,
-              },
-            },
-          },
-        },
-        Likes: {
-          select: {
-            id: true,
-            userId: true,
-            tweetId: true,
-          },
-        },Retweet:{
-          select:{
-            id:true,
-            retweetId:true,
-            tweetId:true, 
-            Tweet:{
-              select:{
-                id:true,
-                content:true,
-                Likes:true
-              }
-            }
-          }
-        }
-      },
-      orderBy: [
-        {
-          createdAt: "desc",
-        },
-      ],
-    });
+    include: {
+      User: true,  
+      Likes: true,  
+      retweets: true,
+      originalTweet: true
+    },
+    orderBy: {
+      createdAt: 'desc' 
+    }
+  });
     return {
       code: 200,
       message: `Lista de todos os tweets:`,
@@ -79,43 +43,20 @@ class TweetService {
   }
 
   public async create(data: CreateTweet): Promise<ResponseDto> {
-    const tweet = new Tweet(data.content, data.type, data.userID, data.tweetId);
-
+    const tweet = new Tweet(data.content, data.type, data.userID, data.originalTweetId);
+    console.log(tweet);
+    
     const createdTweet = await repository.tweet.create({
       data: {
         content: tweet.content,
         type: tweet.type,
         userId: data.userID,
-      },
+        originalTweetId: tweet.originalTweetId
+        
+      }
     });
 
-    if (tweet.tweetId) {
-      const res = await repository.retweet.create({
-        data: {
-          retweetId: createdTweet.id,
-          tweetId: tweet.tweetId,
-        },
-        include: {
-          Tweet: {
-            select: {
-              content: true,
-              User: {
-                select: {
-                  username: true,
-                },
-              },
-            },
-          },
-        },
-      });
 
-      
-      return {
-        code: 201,
-        message: `Você retweetou: '${createdTweet.content}, no tweet '${res.Tweet?.content} do usuario '${res.Tweet?.User.username}'`,
-        data: res,
-      };
-    }
 
     return {
       code: 201,

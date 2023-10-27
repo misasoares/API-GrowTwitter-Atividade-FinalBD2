@@ -2,7 +2,7 @@ import { v4 as uuid } from "uuid"
 
 export class Tweet{
     private _id:string
-    constructor(private _content:string, private _type:string, private _userID:string, private _tweetId?:string){
+    constructor(private _content:string, private _type:string, private _userID:string, private _originalTweetId?:string ){
         this._id = uuid()
     }
     
@@ -21,7 +21,7 @@ export class Tweet{
     public get userId(){
         return this._userID
     }
-    public get tweetId(){
-        return this._tweetId
+    public get originalTweetId(){
+        return this._originalTweetId
     }
 }
