@@ -35,16 +35,16 @@ model Tweet {
   userId          String  @map("user_id")
   Likes           Likes[]
   
-  originalTweetId String? @unique
+  originalTweetId String?
   originalTweet  Tweet?   @relation("Retweets", fields: [originalTweetId], references: [id])
   retweets       Tweet[]  @relation("Retweets")
 
-  
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt() @map("updated_at")
   
   @@map("tweet")
 }
+
 
 model Likes {
   id      String @id @default(uuid())
