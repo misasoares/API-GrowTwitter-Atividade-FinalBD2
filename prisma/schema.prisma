@@ -8,13 +8,14 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(uuid())
-  name     String  @db.VarChar(100)
-  email    String  @unique @db.VarChar(30)
-  username String  @unique @db.VarChar(10)
-  password String  @db.VarChar(64)
-  token    String? @unique
-  Tweets   Tweet[]
+  id          String  @id @default(uuid())
+  name        String  @db.VarChar(100)
+  email       String  @unique @db.VarChar(30)
+  username    String  @unique @db.VarChar(10)
+  password    String  @db.VarChar(64)
+  iconePerfil String @default(uuid())
+  token       String? @unique
+  Tweets      Tweet[]
 
   Follower Follower[] @relation("follower") //array de quem me segue
   Followed Follower[] @relation("followed") //array de quem eu sigo
@@ -28,23 +29,22 @@ model User {
 }
 
 model Tweet {
-  id              String  @id @default(uuid())
-  content         String  @db.VarChar(500)
-  type            String  @db.VarChar(7) // tweet ou retweet
-  User            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId          String  @map("user_id")
-  Likes           Likes[]
-  
-  originalTweetId String?
-  originalTweet  Tweet?   @relation("Retweets", fields: [originalTweetId], references: [id])
-  retweets       Tweet[]  @relation("Retweets")
+  id      String  @id @default(uuid())
+  content String  @db.VarChar(500)
+  type    String  @db.VarChar(7) // tweet ou retweet
+  User    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String  @map("user_id")
+  Likes   Likes[]
 
-  createdAt     DateTime @default(now()) @map("created_at")
-  updatedAt     DateTime @updatedAt() @map("updated_at")
-  
+  originalTweetId String?
+  originalTweet   Tweet?  @relation("Retweets", fields: [originalTweetId], references: [id])
+  retweets        Tweet[] @relation("Retweets")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
   @@map("tweet")
 }
-
 
 model Likes {
   id      String @id @default(uuid())
