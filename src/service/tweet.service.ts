@@ -6,16 +6,20 @@ import { Tweet } from "../model/tweet.model";
 class TweetService {
   public async list(): Promise<ResponseDto> {
     const result = await repository.tweet.findMany({
-    include: {
-      User: true,  
-      Likes: true,  
-      retweets: true,
-      originalTweet: true
-    },
-    orderBy: {
-      createdAt: 'desc' 
-    }
-  });
+      include: {
+        User: true,
+        Likes: true,
+        retweets: true,
+        originalTweet: {
+          include: {
+            User: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
     return {
       code: 200,
       message: `Lista de todos os tweets:`,
@@ -45,18 +49,15 @@ class TweetService {
   public async create(data: CreateTweet): Promise<ResponseDto> {
     const tweet = new Tweet(data.content, data.type, data.userID, data.originalTweetId);
     console.log(tweet);
-    
+
     const createdTweet = await repository.tweet.create({
       data: {
         content: tweet.content,
         type: tweet.type,
         userId: data.userID,
-        originalTweetId: tweet.originalTweetId
-        
-      }
+        originalTweetId: tweet.originalTweetId,
+      },
     });
-
-
 
     return {
       code: 201,

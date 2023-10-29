@@ -67,6 +67,7 @@ console.log("-------------")
   }
 
   public async getUserByToken(token: string): Promise<ResponseDto> {
+    
     const user = await repository.user.findUnique({
       where: {
         token: token,

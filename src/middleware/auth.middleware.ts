@@ -12,7 +12,7 @@ async function authMiddleware(req: Request, res: Response, next: NextFunction) {
 				message: 'Authentication token fail',
 			});
 		}
-		
+	
 		const result = await userService.getUserByToken(token as string);
 		
 		if (!result.data) {
