@@ -56,7 +56,9 @@ class TweetService {
         type: tweet.type,
         userId: data.userID,
         originalTweetId: tweet.originalTweetId,
-      },
+      },include:{
+        User:true
+      }
     });
 
     return {
