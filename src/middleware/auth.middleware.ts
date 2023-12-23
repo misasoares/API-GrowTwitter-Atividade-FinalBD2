@@ -1,27 +1,27 @@
 import { NextFunction, Request, Response } from "express";
 import userService from "../service/user.service";
+import { verify } from "jsonwebtoken";
+import { env } from "process";
 
 async function authMiddleware(req: Request, res: Response, next: NextFunction) {
   try {
-    const token = req.headers.authorization;
+    const authHeader = req.headers.authorization;
 
-    if (!token) {
+    if (!authHeader) {
       return res.status(401).send({
         code: 401,
         message: "Authentication token fail",
       });
     }
 
-    const result = await userService.getUserByToken(token as string);
+    const [,token] = authHeader.split(" ")
 
-    if (!result.data) {
-      return res.status(401).send({
-        code: 401,
-        message: "Authentication token fail",
-      });
-    }
+    verify(token, `${process.env.JWT_SECRET}`, async(err:any, user:any)=>{
+      if (err) return res.status(401).json({ message: `Erro no verify: ${err}` });
 
-    req.body.userID = result.data.id;
+      req.user = user.result;
+
+    })
 
     next();
   } catch (error) {

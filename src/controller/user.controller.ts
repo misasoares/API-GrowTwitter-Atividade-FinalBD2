@@ -43,20 +43,17 @@ export default class UserController {
 
   public async getById(req: Request, res: Response) {
     try {
-      const { userID } = req.body;
-
-      const result = await userService.getById(userID);
-
-      return res.status(200).send(result);
-    } catch (error) {
-      return res.status(500).send(error);
-    }
-  }
-
-  public async getAllById(req: Request, res: Response) {
-    try {
       const { id } = req.params;
-      const result = await userService.getByid(id);
+
+      if (!id) {
+        return {
+          code: 404,
+          message: `Não encontrado..`,
+        };
+      }
+
+      const result = await userService.getById(id);
+
       return res.status(200).send(result);
     } catch (error) {
       return res.status(500).send(error);

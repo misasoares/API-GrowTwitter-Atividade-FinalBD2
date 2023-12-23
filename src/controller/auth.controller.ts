@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import userService from "../service/user.service";
-import { v4 as uuid } from "uuid";
 const bcrypt = require("bcrypt");
+import jwt from "jsonwebtoken";
 
 export class AuthController {
   public async login(req: Request, res: Response) {
     try {
       const { username, password } = req.body;
-      if(!username || !password){
+      if (!username || !password) {
         return res.status(404).send({
           code: 404,
           message: "Preencha todos os campos.",
@@ -26,11 +26,9 @@ export class AuthController {
         return res.status(401).send({ message: "Username ou senha incorretos." });
       }
 
-      const token = uuid();
+      const token = jwt.sign({ user }, `${process.env.JWT_SECRET}`);
 
-      const update = await userService.update({ ...user.data, token: token });
-
-      return res.status(200).send(update);
+      return res.status(200).send({ user: user, token });
     } catch (error) {
       return res.status(400).send(error);
     }

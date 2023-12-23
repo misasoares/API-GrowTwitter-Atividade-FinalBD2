@@ -7,9 +7,8 @@ export const userRoutes = () => {
   const controller = new UserController()
 
   router.post("/", controller.create);
-  router.get("/", authMiddleware, controller.list);
-  router.get("/me", authMiddleware, controller.getById);
-  router.get("/:id", controller.getAllById);
+  router.get("/", controller.list);
+  router.get("/:id", controller.getById);
   router.put("/", authMiddleware, controller.update);
   router.delete("/delete", authMiddleware, controller.delete);
 

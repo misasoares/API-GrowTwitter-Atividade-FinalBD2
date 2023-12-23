@@ -15,8 +15,7 @@ class UserService {
   }
 
   public async create(data: CreateUserDto): Promise<ResponseDto> {
-
-    if (data.username!.length > 10) {
+    if (data.username!.length > 20) {
       return {
         code: 400,
         message: `Username excedeu o limite de characteres.`,
@@ -36,7 +35,7 @@ class UserService {
         password: user.password,
       },
     });
-console.log("-------------")
+
     return {
       code: 201,
       message: `Usuário criado com sucesso.`,
@@ -45,8 +44,6 @@ console.log("-------------")
   }
 
   public async getByUsernameAndPassword(username: string, password: string): Promise<ResponseDto> {
-   
-    
     const user = await repository.user.findUnique({
       where: {
         username: username,
@@ -55,25 +52,11 @@ console.log("-------------")
     const isPasswordValid = await bcrypt.compare(password, user!.password);
 
     if (!isPasswordValid) {
-      return { 
-        code:404,
-        message: "Username ou senha incorretos." };
+      return {
+        code: 404,
+        message: "Username ou senha incorretos.",
+      };
     }
-    return {
-      code: 200,
-      message: `Sucesso.`,
-      data: user,
-    };
-  }
-
-  public async getUserByToken(token: string): Promise<ResponseDto> {
-    
-    const user = await repository.user.findUnique({
-      where: {
-        token: token,
-      },
-    });
-
     return {
       code: 200,
       message: `Sucesso.`,
@@ -111,7 +94,6 @@ console.log("-------------")
         email: data.email,
         password: data.password,
         username: data.username,
-        token: data.token,
       },
     });
 
@@ -123,6 +105,7 @@ console.log("-------------")
   }
 
   public async getById(id: string): Promise<ResponseDto> {
+
     const result = await repository.user.findUnique({
       where: {
         id,
@@ -153,19 +136,6 @@ console.log("-------------")
       code: 200,
       message: `Usuário deletado com sucesso.`,
       data: result,
-    };
-  }
-
-  public async getByid(id: string): Promise<ResponseDto> {
-    const user = await repository.user.findUnique({
-      where: {
-        id,
-      },
-    });
-    return {
-      code: 200,
-      message: "Lista de todos os usuarios",
-      data: user,
     };
   }
 }
